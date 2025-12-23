@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QueryBridge: 1M+ Annotated SPARQL Pairs & Maestro Generation Framework</title>
+    
+    <meta name="description" content="QueryBridge: The largest annotated KGQA dataset with 1,004,534 questions. Maestro: Automated benchmark generation for Knowledge Graphs. Research by Abdelghny Orogat and Ahmed El-Roby.">
+    <meta name="keywords" content="QueryBridge, Maestro, KGQA Dataset, SPARQL, Knowledge Graph Question Answering, DBpedia, Semantic Parsing, NLP Benchmark, CIKM 2025">
+    
+    <meta name="citation_title" content="QueryBridge: One Million Annotated Questions with SPARQL Queries">
+    <meta name="citation_author" content="Abdelghny Orogat">
+    <meta name="citation_author" content="Ahmed El-Roby">
+    <meta name="citation_publication_date" content="2025/11/10">
+    <meta name="citation_conference_title" content="Proceedings of the 34th ACM International Conference on Information and Knowledge Management (CIKM '25)">
+    <meta name="citation_doi" content="10.1145/3746252.3761623">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      "name": "QueryBridge",
+      "description": "A million-scale dataset of annotated natural language questions paired with SPARQL queries for KGQA research.",
+      "url": "https://huggingface.co/datasets/aorogat/QueryBridge",
+      "creator": { "@type": "Person", "name": "Abdelghny Orogat" },
+      "distribution": [ { "@type": "DataDownload", "encodingFormat": "JSON", "contentUrl": "https://huggingface.co/datasets/aorogat/QueryBridge" } ],
+      "spatialCoverage": "DBpedia",
+      "citation": "https://doi.org/10.1145/3746252.3761623",
+      "version": "1.0"
+    }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --brand: #4f46e5; --text: #1f2937; --muted: #6b7280; --bg: #f8fafc; --accent: #eef2ff; --code-bg: #1e293b; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; margin: 0; line-height: 1.6; color: var(--text); background: #fff; scroll-behavior: smooth; }
+        .container { max-width: 1050px; margin: 0 auto; padding: 0 1.5rem; }
+        header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 100; padding: 0.75rem 0; }
+        .nav-flex { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 800; font-size: 1.2rem; color: var(--brand); text-decoration: none; }
+        .nav-links a { margin-left: 1.25rem; text-decoration: none; color: var(--muted); font-size: 0.85rem; font-weight: 600; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--brand); }
+        .hero { padding: 6rem 0 4rem; text-align: center; background: radial-gradient(circle at top, var(--accent), #fff); border-bottom: 1px solid #f1f5f9; }
+        .hero h1 { font-size: 3.5rem; font-weight: 800; letter-spacing: -0.05em; margin: 0; line-height: 1.1; }
+        .hero p { font-size: 1.25rem; color: var(--muted); max-width: 800px; margin: 1.5rem auto; }
+        .section { padding: 5rem 0; border-bottom: 1px solid #f1f5f9; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .card { padding: 2rem; border-radius: 1rem; border: 1px solid #e2e8f0; background: #fff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .hf-box { border-radius: 1rem; overflow: hidden; margin: 3rem 0; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+        .code-block { background: var(--code-bg); color: #f8fafc; padding: 1.5rem; border-radius: 0.75rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; overflow-x: auto; margin: 1.5rem 0; position: relative; }
+        .code-label { position: absolute; top: 0; right: 0; background: var(--brand); color: #fff; padding: 0.2rem 0.6rem; font-size: 0.7rem; font-weight: 700; border-bottom-left-radius: 0.5rem; }
+        .data-table { width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: 0.9rem; border-radius: 0.5rem; overflow: hidden; }
+        .data-table th { text-align: left; padding: 1rem; background: var(--bg); border-bottom: 2px solid #e2e8f0; }
+        .data-table td { padding: 1rem; border-bottom: 1px solid #f1f5f9; }
+        .figure-box { background: var(--bg); border-radius: 1.5rem; padding: 2.5rem; text-align: center; margin: 3rem 0; border: 1px solid #e2e8f0; }
+        .figure-img { max-width: 100%; height: auto; border-radius: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); background: #fff; }
+        .caption { font-size: 0.85rem; color: var(--muted); font-style: italic; margin-top: 1.25rem; display: block; }
+        .tag { display: inline-block; padding: 0.2rem 0.6rem; background: var(--accent); color: var(--brand); border-radius: 0.5rem; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; }
+        footer { padding: 4rem 0; text-align: center; font-size: 0.85rem; color: var(--muted); border-top: 1px solid #f1f5f9; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container nav-flex">
+        <a href="#" class="logo">QueryBridge Research</a>
+        <nav class="nav-links">
+            <a href="#dataset">Dataset</a>
+            <a href="#maestro">Methodology</a>
+            <a href="#quickstart">Quickstart</a>
+            <a href="#cite">Cite</a>
+        </nav>
+    </div>
+</header>
+
+<div class="hero">
+    <div class="container">
+        <span class="tag">CIKM 2025, SIGMOD 2023</span>
+        <h1>Stop Training KGQA on 30K Examples</h1>
+        <p>QueryBridge provides over <strong>one million annotated natural language questions</strong> aligned with executable SPARQL queries, enabling robust training and evaluation of KGQA systems.</p>
+        <div style="margin-top: 2rem;">
+            <a href="#quickstart" style="background: var(--brand); color: #fff; padding: 0.85rem 1.75rem; border-radius: 0.5rem; text-decoration: none; font-weight: 700; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);">Get Started</a>
+        </div>
+    </div>
+</div>
+
+<section id="dataset" class="section">
+    <div class="container">
+        <h2 style="text-align: center;">QueryBridge: Million-Scale Semantic Mapping</h2>
+        <p style="text-align: center; color: var(--muted); max-width: 850px; margin: 0 auto 3rem;">QueryBridge is a large-scale dataset designed to address the long-standing data scarcity problem in Question Answering over Knowledge Graphs (KGQA). Unlike prior benchmarks that contain only thousands of questions, QueryBridge provides <strong>1,004,534 natural language questions</strong> paired with executable SPARQL queries over DBpedia.</p>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>Million-Scale Training</h3>
+                <p>Enables the development of data-intensive neural semantic parsers and large language models (LLMs) by surmounting the 30k-example "data wall" of legacy benchmarks.</p>
+            </div>
+            <div class="card">
+                <h3>Fine-Grained Supervision</h3>
+                <p>Enriched with structural metadata and XML-style tags (<code>&lt;qt&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;o&gt;</code>, <code>&lt;cc&gt;</code>) to support both end-to-end and component-level evaluation.</p>
+            </div>
+            <div class="card">
+                <h3>Structural Taxonomy</h3>
+                <p>Features comprehensive coverage of multi-hop paths, including Chain (6.77%), Star (56.63%), Tree, Cycle, Flower, and Set-Shape (13.65%) queries.</p>
+            </div>
+        </div>
+
+        <div class="hf-box" id="explorer">
+            <iframe src="https://huggingface.co/datasets/aorogat/QueryBridge/embed/viewer" frameBorder="0" width="100%" height="560px"></iframe>
+        </div>
+    </div>
+</section>
+
+<section id="maestro" class="section" style="background: var(--bg);">
+    <div class="container">
+        <h2>Maestro: The Generation Framework</h2>
+        <p style="text-align: center; max-width: 850px; margin: 0 auto;">QueryBridge is systematically generated via <strong>Maestro</strong>, the first framework to automatically produce comprehensive, utterance-aware benchmarks for any targeted Knowledge Graph.</p>
+        
+        <div class="figure-box" style="background: #fff;">
+            <img src="https://raw.githubusercontent.com/aorogat/QueryBridge/main/maestro.png" alt="Maestro Architecture" class="figure-img" style="max-width: 80%;">
+            <span class="caption">Figure 1: Maestro architecture for automated benchmark generation. The system (1) selects representative seed entities, (2) instantiates diverse query shapes over the KG, and (3) lexicalizes graph patterns into natural language.</span>
+        </div>
+
+        <div class="grid">
+            <div>
+                <h3>Resilience to KG Evolution</h3>
+                <p>Static benchmarks become stale as KG ontologies evolve. Maestro addresses this by traversing the graph starting from selected seeds to find all valid subgraph shapes, ensuring benchmarks remain accurate.</p>
+            </div>
+            <div>
+                <h3>Utterance-Aware Lexicalization</h3>
+                <p>By mapping external text corpora to KG predicates, Maestro captures semantically-equivalent utterances. This results in high-quality natural language questions that are on par with manually-generated ones.</p>
+            </div>
+            <div>
+                <h3>Bias-Free Sampling</h3>
+                <p>Instead of random selection, Maestro uses Class Importance ($I_c$) and Entity Popularity ($P_e$) heuristics to ensure representative sampling of both common and tail entities.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="quickstart" class="section">
+    <div class="container">
+        <h2>Using QueryBridge via Hugging Face</h2>
+        <p>QueryBridge is distributed through the Hugging Face datasets library, allowing researchers to seamlessly load, filter, and process the dataset without manual downloads.</p>
+        
+        <h3>Quick Load (Python)</h3>
+<div style="
+    position: relative;
+    background: #0b1220;
+    border-radius: 14px;
+    padding: 1.4rem 1.6rem 1.6rem;
+    margin: 2rem 0;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.10);
+    overflow-x: auto;
+">
+    <!-- Label -->
+    <div style="
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
+        color: #ffffff;
+        font-size: 0.7rem;
+        font-weight: 800;
+        padding: 0.25rem 0.65rem;
+        border-bottom-left-radius: 10px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    ">
+        Python · Hugging Face
+    </div>
+
+<pre style="
+    margin: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    white-space: pre;
+    color: #e5e7eb;
+"><code>
+<span style="color:#c084fc;">from</span> <span style="color:#60a5fa;">datasets</span> <span style="color:#c084fc;">import</span> <span style="color:#eab308;">load_dataset</span>
+
+<span style="color:#6b7280;"># Load QueryBridge (≈1.0M question–SPARQL pairs)</span>
+<span style="color:#6b7280;"># Cached and streamed automatically by Hugging Face</span>
+<span style="color:#60a5fa;">dataset</span> <span style="color:#c084fc;">=</span> <span style="color:#eab308;">load_dataset</span>(
+    <span style="color:#34d399;">"aorogat/QueryBridge"</span>
+)
+
+<span style="color:#6b7280;"># Inspect dataset structure</span>
+<span style="color:#eab308;">print</span>(<span style="color:#60a5fa;">dataset</span>)
+<span style="color:#eab308;">print</span>(<span style="color:#60a5fa;">dataset</span>[<span style="color:#34d399;">"train"</span>].<span style="color:#eab308;">column_names</span>)
+
+<span style="color:#6b7280;"># Example 1: Filter by query structure (STAR-shaped queries)</span>
+<span style="color:#60a5fa;">star_queries</span> <span style="color:#c084fc;">=</span> <span style="color:#60a5fa;">dataset</span>[<span style="color:#34d399;">"train"</span>].<span style="color:#eab308;">filter</span>(
+    <span style="color:#c084fc;">lambda</span> <span style="color:#60a5fa;">ex</span>: <span style="color:#60a5fa;">ex</span>[<span style="color:#34d399;">"shapeType"</span>] <span style="color:#c084fc;">==</span> <span style="color:#34d399;">"STAR"</span>
+)
+
+<span style="color:#eab308;">print</span>(
+    <span style="color:#34d399;">f"Number of STAR queries: {</span><span style="color:#60a5fa;">len</span>(<span style="color:#60a5fa;">star_queries</span>)<span style="color:#34d399;">}"</span>
+)
+
+<span style="color:#6b7280;"># Example 2: Filter by reasoning complexity</span>
+<span style="color:#60a5fa;">complex_queries</span> <span style="color:#c084fc;">=</span> <span style="color:#60a5fa;">dataset</span>[<span style="color:#34d399;">"train"</span>].<span style="color:#eab308;">filter</span>(
+    <span style="color:#c084fc;">lambda</span> <span style="color:#60a5fa;">ex</span>: <span style="color:#60a5fa;">ex</span>[<span style="color:#34d399;">"questionComplexity"</span>] <span style="color:#c084fc;">&gt;=</span> <span style="color:#fca5a5;">0.7</span>
+)
+
+<span style="color:#6b7280;"># Example 3: Access token-level semantic supervision</span>
+<span style="color:#60a5fa;">sample</span> <span style="color:#c084fc;">=</span> <span style="color:#60a5fa;">dataset</span>[<span style="color:#34d399;">"train"</span>][<span style="color:#fca5a5;">0</span>]
+
+<span style="color:#eab308;">print</span>(<span style="color:#34d399;">"Raw question:"</span>)
+<span style="color:#eab308;">print</span>(<span style="color:#60a5fa;">sample</span>[<span style="color:#34d399;">"questionString"</span>])
+
+<span style="color:#eab308;">print</span>(<span style="color:#34d399;">"\nTagged question (NL ↔ SPARQL alignment):"</span>)
+<span style="color:#eab308;">print</span>(<span style="color:#60a5fa;">sample</span>[<span style="color:#34d399;">"questionStringTagged"</span>])
+
+<span style="color:#6b7280;"># Example 4: Retrieve the executable SPARQL query</span>
+<span style="color:#eab308;">print</span>(<span style="color:#34d399;">"\nCorresponding SPARQL query:"</span>)
+<span style="color:#eab308;">print</span>(<span style="color:#60a5fa;">sample</span>[<span style="color:#34d399;">"query"</span>])
+</code></pre>
+</div>
+
+
+        <h3>Field-Level Schema</h3>
+        <table class="data-table">
+            <thead>
+                <tr><th>Field</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>questionString</code></td><td>The raw natural language question.</td></tr>
+                <tr><td><code>questionStringTagged</code></td><td>XML-annotated version linking to SPARQL components.</td></tr>
+                <tr><td><code>query</code></td><td>The executable SPARQL query for DBpedia.</td></tr>
+                <tr><td><code>shapeType</code></td><td>The structural query pattern (Chain, Star, Tree, etc.).</td></tr>
+                <tr><td><code>questionComplexity</code></td><td>Normalized score based on tokens, triples, and keywords.</td></tr>
+                <tr><td><code>answerCardinality</code></td><td>Number of gold standard answers returned.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section id="cite" class="section" style="background: var(--bg);">
+  <div class="container">
+    <h2>How to Cite</h2>
+
+    <p style="margin-bottom: 2.5rem; max-width: 900px;">
+      If you use <strong>QueryBridge</strong>, <strong>Maestro</strong>, or any of their derived resources
+      (e.g., subsets, extensions, benchmarks, or baselines) in your research, please cite the
+      corresponding publications below. Proper citation supports reproducibility, transparency,
+      and sustained maintenance of large-scale benchmarks.
+    </p>
+
+    <!-- Special citation cards (inline CSS only) -->
+    <div style="display: grid; grid-template-columns: 1fr; gap: 1.25rem;">
+
+      <!-- Card 1 -->
+      <div style="
+        background: #0b1220;
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+      ">
+        <div style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
+          padding: 0.9rem 1.1rem;
+          background: linear-gradient(135deg, rgba(79,70,229,0.35), rgba(124,58,237,0.25));
+          border-bottom: 1px solid rgba(255,255,255,0.08);
+        ">
+          <div style="display:flex; flex-direction:column; gap:0.15rem;">
+            <span style="font-weight: 800; color: #eef2ff; letter-spacing: -0.01em;">QueryBridge (CIKM 2025)</span>
+            <span style="font-size: 0.85rem; color: rgba(255,255,255,0.75);">BibTeX citation</span>
+          </div>
+          <span style="
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #ffffff;
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.16);
+            border: 1px solid rgba(255,255,255,0.16);
+            white-space: nowrap;
+          ">COPY</span>
+        </div>
+
+        <pre style="
+          margin: 0;
+          padding: 1.15rem 1.1rem 1.25rem;
+          color: #e5e7eb;
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+          font-size: 0.86rem;
+          line-height: 1.55;
+          white-space: pre;
+          overflow-x: auto;
+        ">@inproceedings{orogat2025querybridge,
+  title     = {QueryBridge: One Million Annotated Questions with SPARQL Queries},
+  author    = {Orogat, Abdelghny and El-Roby, Ahmed},
+  booktitle = {Proceedings of the 34th ACM International Conference on Information and Knowledge Management (CIKM)},
+  year      = {2025},
+  doi       = {10.1145/3746252.3761623}
+}</pre>
+
+        <div style="
+          padding: 0.85rem 1.1rem;
+          border-top: 1px solid rgba(255,255,255,0.08);
+          color: rgba(255,255,255,0.78);
+          font-size: 0.9rem;
+          background: rgba(255,255,255,0.02);
+        ">
+          <span style="font-weight: 700; color: #c7d2fe;">Use when:</span>
+          Dataset usage, training/evaluation baselines, derived subsets, or extensions of QueryBridge.
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="
+        background: #0b1220;
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+      ">
+        <div style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
+          padding: 0.9rem 1.1rem;
+          background: linear-gradient(135deg, rgba(79,70,229,0.25), rgba(124,58,237,0.18));
+          border-bottom: 1px solid rgba(255,255,255,0.08);
+        ">
+          <div style="display:flex; flex-direction:column; gap:0.15rem;">
+            <span style="font-weight: 800; color: #eef2ff; letter-spacing: -0.01em;">Maestro (PACMMOD 2023)</span>
+            <span style="font-size: 0.85rem; color: rgba(255,255,255,0.75);">BibTeX citation</span>
+          </div>
+          <span style="
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #ffffff;
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.16);
+            border: 1px solid rgba(255,255,255,0.16);
+            white-space: nowrap;
+          ">COPY</span>
+        </div>
+
+        <pre style="
+          margin: 0;
+          padding: 1.15rem 1.1rem 1.25rem;
+          color: #e5e7eb;
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+          font-size: 0.86rem;
+          line-height: 1.55;
+          white-space: pre;
+          overflow-x: auto;
+        ">@article{orogat2023maestro,
+  title   = {Maestro: Automatic Generation of Comprehensive Benchmarks for Question Answering Over Knowledge Graphs},
+  author  = {Orogat, Abdelghny and El-Roby, Ahmed},
+  journal = {Proceedings of the ACM on Management of Data},
+  volume  = {1},
+  number  = {2},
+  year    = {2023},
+  doi     = {10.1145/3589322}
+}</pre>
+
+        <div style="
+          padding: 0.85rem 1.1rem;
+          border-top: 1px solid rgba(255,255,255,0.08);
+          color: rgba(255,255,255,0.78);
+          font-size: 0.9rem;
+          background: rgba(255,255,255,0.02);
+        ">
+          <span style="font-weight: 700; color: #c7d2fe;">Use when:</span>
+          Referencing the benchmark-generation methodology, regeneration, or applying Maestro to other knowledge graphs.
+        </div>
+      </div>
+
+      <!-- Optional note -->
+      <div style="
+        margin-top: 0.25rem;
+        padding: 0.9rem 1rem;
+        border-radius: 12px;
+        border: 1px dashed rgba(79,70,229,0.35);
+        background: rgba(79,70,229,0.06);
+        color: #374151;
+        max-width: 900px;
+      ">
+        <strong>Note:</strong> Citations are provided in BibTeX for convenience. For paper submissions, keep the BibTeX entries unchanged to preserve DOI metadata.
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<footer>
+    <div class="container">
+        <p><strong>Abdelghny Orogat & Ahmed El-Roby</strong> · Carleton University · Ottawa, ON, Canada</p>
+        <p>Open Access Support provided by Carleton University. Dataset v1.0 (Initial Release).</p>
+    </div>
+</footer>
+
+</body>
+</html>
