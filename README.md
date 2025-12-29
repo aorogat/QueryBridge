@@ -106,24 +106,43 @@ If you use **QueryBridge**, **Maestro**, or any derived resources, please cite t
 ### QueryBridge
 
 ```bibtex
-@inproceedings{orogat2025querybridge,
-  title     = {QueryBridge: One Million Annotated Questions with SPARQL Queries},
-  author    = {Orogat, Abdelghny and El-Roby, Ahmed},
-  booktitle = {Proceedings of the 34th ACM International Conference on Information and Knowledge Management (CIKM)},
-  year      = {2025},
-  doi       = {10.1145/3746252.3761623}
+@inproceedings{10.1145/3746252.3761623,
+author = {Orogat, Abdelghny and El-Roby, Ahmed},
+title = {QueryBridge: One Million Annotated Questions with SPARQL Queries - Dataset for Question Answering over Knowledge Graphs},
+year = {2025},
+isbn = {9798400720406},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3746252.3761623},
+doi = {10.1145/3746252.3761623},
+booktitle = {Proceedings of the 34th ACM International Conference on Information and Knowledge Management},
+pages = {6503–6507},
+numpages = {5},
+keywords = {dataset, knowledge graphs, question answering, sparql},
+location = {Seoul, Republic of Korea},
+series = {CIKM '25}
 }
 ```
 
 ### Maestro
 
 ```bibtex
-@article{orogat2023maestro,
-  title   = {Maestro: Automatic Generation of Comprehensive Benchmarks for Question Answering Over Knowledge Graphs},
-  author  = {Orogat, Abdelghny and El-Roby, Ahmed},
-  journal = {Proceedings of the ACM on Management of Data},
-  year    = {2023},
-  doi     = {10.1145/3589322}
+@article{10.1145/3589322,
+author = {Orogat, Abdelghny and El-Roby, Ahmed},
+title = {Maestro: Automatic Generation of Comprehensive Benchmarks for Question Answering Over Knowledge Graphs},
+year = {2023},
+issue_date = {June 2023},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {1},
+number = {2},
+url = {https://doi.org/10.1145/3589322},
+doi = {10.1145/3589322},
+journal = {Proc. ACM Manag. Data},
+month = jun,
+articleno = {177},
+numpages = {24},
+keywords = {automatic generation, benchmarks, comprehensiveness evaluation, question answering over knowledge graphs}
 }
 ```
 
