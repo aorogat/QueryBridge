@@ -2,7 +2,7 @@
 ### A Million-Scale Dataset for Knowledge-Graph Question Answering (KGQA)
 
 🌐 **Dataset Website:** https://aorogat.github.io/QueryBridge/  
-🤗 **Hugging Face Dataset:** aorogat/QueryBridge  
+🤗 **Hugging Face Dataset:** [aorogat/QueryBridge](https://huggingface.co/datasets/aorogat/QueryBridge)  
 📄 **Conference:** CIKM 2025  
 
 ---
